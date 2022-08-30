@@ -63,9 +63,9 @@ def carrega_stopwords():
     return nltk.corpus.stopwords.words('portuguese')
 stopWords = carrega_stopwords()
 
-@st.experimental_memo
-def carrega_ekphrasis():
-    text_processor = TextPreProcessor(
+#@st.experimental_memo
+#def carrega_ekphrasis():
+text_processor = TextPreProcessor(
     # terms that will be normalized
     normalize=['url', 'email', 'percent', 'money', 'phone', 'user',
         'time', 'url', 'date', 'number'],
@@ -73,29 +73,29 @@ def carrega_ekphrasis():
     annotate={'hashtag', 'allcaps', 'elongated', 'repeated',
         'emphasis', 'censored'},
     fix_html=True,  # fix HTML tokens
-    
+
     # corpus from which the word statistics are going to be used 
     # for word segmentation 
     segmenter='twitter', 
-    
+
     # corpus from which the word statistics are going to be used 
     # for spell correction
     corrector='twitter', 
-    
+
     unpack_hashtags=True,  # perform word segmentation on hashtags
     unpack_contractions=True,  # Unpack contractions (can't -> can not)
     spell_correct_elong=False,  # spell correction for elongated words
-    
+
     # select a tokenizer. You can use SocialTokenizer, or pass your own
     # the tokenizer, should take as input a string and return a list of tokens
     tokenizer=SocialTokenizer(lowercase=True).tokenize,
-    
+
     # list of dictionaries, for replacing tokens extracted from the text,
     # with other expressions. You can pass more than one dictionaries.
     dicts=[emoticons]
     )
-    return text_processor
-text_processor=carrega_ekphrasis()
+    #return text_processor
+#text_processor=carrega_ekphrasis()
 
 @st.experimental_memo
 def carrega_modelo(path):
