@@ -68,11 +68,7 @@ def gera_vacinaReplace():
     return vacinaReplace
 vacinaReplace = gera_vacinaReplace()
 
-@st.cache()
-def gera_SpellChecker():
-    spell = SpellChecker(language='pt')
-    return spell
-spell = gera_SpellChecker()
+spell = SpellChecker(language='pt')
 
 @st.cache()
 def gera_spacy():
@@ -83,11 +79,8 @@ nlp = gera_spacy
 nltk.download('stopwords')
 nltk.download('punkt')
 
-@st.cache()
-def gera_nltk_stopwords():
-    stopWords = nltk.corpus.stopwords.words('portuguese')
-    return stopWords
-stopWords = gera_nltk_stopwords()
+stopWords = nltk.corpus.stopwords.words('portuguese')
+
 
 @st.cache()
 def gera_ekprhasis():
