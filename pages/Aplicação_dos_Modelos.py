@@ -144,7 +144,7 @@ def troca_palavras(linha):
 def lemmatization_cogroo4py(linha):
     nova_linha = []
     for palavra in nlp(linha):
-        nova_linha.append(token.lemma_)
+        nova_linha.append(palavra.lemma_)
 
     return nova_linha
 
