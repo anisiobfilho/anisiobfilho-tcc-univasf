@@ -258,8 +258,8 @@ def cria_modelo_word2vec(linha):
 st.header("Usagem dos Modelos 🌵")
 
 algoritmo = st.selectbox('Algoritmo',("Random Forest","XGBoost"))
-oversampling = st.selectbox('Oversampling',(True, False)) 
-undersampling = st.selectbox('Undersampling',(True, False)) 
+oversampling = st.selectbox('Oversampling',('True', 'False')) 
+undersampling = st.selectbox('Undersampling',('False', 'True')) 
 tweet_text = st.text_input("Tweet")
 resultado =""
 
@@ -270,7 +270,7 @@ if st.button("Predict"):
         tag = 'RF'
     elif algoritmo == 'XGBoost':
         tag = 'XGB'
-    modelo = joblib.load('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
+    modelo = joblib.load('models/model-'+tag+'_OV_'+oversampling+'_UN_'+undersampling+'.sav')
     resultado = modelo.predict(cria_modelo_word2vec(tweet_text))
     if resultado == 0:
         classe = 'Fake'
