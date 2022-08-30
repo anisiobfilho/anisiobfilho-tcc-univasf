@@ -25,7 +25,7 @@ st.set_page_config(
  )
 
 ## FUNÇÕES DE PRÉ-PROCESSAMENTO
-@st.experimental_memo
+@st.cache()
 def carrega_base(path):
     data = pd.read_csv(path, low_memory=True)
     return data
@@ -49,7 +49,6 @@ vacinaReplace = [
 
 
 spell = SpellChecker(language='pt')
-
 nlp = spacy.load("pt_core_news_sm")
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -85,11 +84,12 @@ text_processor = TextPreProcessor(
     dicts=[emoticons]
     )
 
-@st.experimental_memo
+@st.cache()
 def carrega_modelo_word2vec(path):
     modelo_word2vec = gensim.models.KeyedVectors.load(path)
     return modelo_word2vec
 
+@st.cache()
 def cria_modelo_word2vec(linha): 
     ### Convertendo para string
     linha = str(linha)
@@ -110,19 +110,22 @@ def cria_modelo_word2vec(linha):
 
     linha = word_tokenize(linha, language='portuguese')
 
-    nova_linha1 = []
+    nova_linha = []
     for parte in linha:
         if parte not in stopWords:
-            nova_linha1.append(parte)
-        
+            nova_linha.append(parte)
     
-    nova_linha2 = []
-    for palavra in nova_linha1:
+    linha = nova_linha   
+    
+    nova_linha = []
+    for palavra in linha:
         if palavra not in df_stopwords.stopwords.to_list():
-            nova_linha2.append(palavra)
+            nova_linha.append(palavra)
     
-    nova_linha3 = []
-    for palavra in nova_linha3:
+    linha = nova_linha
+
+    nova_linha = []
+    for palavra in linha:
         if palavra in dict_internet.keys():
             palavra = palavra.replace(palavra, dict_internet[palavra])
         if palavra in dict_estados.keys():
@@ -133,13 +136,12 @@ def cria_modelo_word2vec(linha):
             palavra = palavra.replace(palavra, 'covid')            
         if palavra in vacinaReplace:
             palavra = palavra.replace(palavra, 'vacina')
-        nova_linha3.append(palavra)
+        nova_linha.append(palavra)
+    
+    linha = nova_linha
 
-    nova_linha4 = []
     doc = nlp(str(linha))
-    nova_linha4 = [token.lemma_ for token in doc if not token.is_punct]
-
-    tweet = nova_linha4
+    linha = [token.lemma_ for token in doc if not token.is_punct]
 
     modelo_word2vec = carrega_modelo_word2vec('data/corpus_labeled/iguais/bases_tcc/05_word2vec_model_creation_base')
 
@@ -213,7 +215,7 @@ def cria_modelo_word2vec(linha):
             embedding_matrix = modelo_word2vec
             )
     x_vecs = np.asarray([sequencer.textToVector(" ".join(seq)) for seq in df['tweet_text_stemming']])
-    test_vec = sequencer.textToVector(tweet)
+    test_vec = sequencer.textToVector(linha)
     
     pca_model = PCA(n_components=50)
     pca_model.fit(x_vecs)
@@ -221,6 +223,10 @@ def cria_modelo_word2vec(linha):
 
     return x_comps
 
+
+@st.cache()
+def carrega_modelo(path):
+    return joblib.load(path)
 
 ## MAIN
 st.header("Usagem dos Modelos 🌵")
@@ -238,7 +244,7 @@ if st.button("Predict"):
         tag = 'RF'
     elif algoritmo == 'XGBoost':
         tag = 'XGB'
-    modelo = joblib.load('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
+    modelo = carrega_modelo('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
     resultado = modelo.predict(cria_modelo_word2vec(tweet_text))
     if resultado == 0:
         classe = 'Fake'
@@ -249,3 +255,10 @@ if st.button("Predict"):
 
     st.success('A classe deste tweet é: {}'.format(classe))
     #print(classe)
+    del(algoritmo)
+    del(oversampling)
+    del(undersampling)
+    del(tag)
+    del(modelo)
+    del(resultado)
+    del(classe)
