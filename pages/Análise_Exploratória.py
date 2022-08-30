@@ -124,7 +124,7 @@ def gera_nuvem_palavras(dicionario_frequencia):
     return fig, wordcloud
 
 ## Main
-st.title("Análise Exploratória da Base de Dados")
+st.header("Análise Exploratória da Base de Dados")
 
 st.header("Visões")
 with st.expander("Turnos"):
