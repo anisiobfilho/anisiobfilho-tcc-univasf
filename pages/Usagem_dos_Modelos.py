@@ -74,7 +74,7 @@ spell = SpellChecker(language='pt')
 def gera_spacy():
     nlp = spacy.load("pt_core_news_sm")
     return nlp
-nlp = gera_spacy
+nlp = gera_spacy()
 
 nltk.download('stopwords')
 nltk.download('punkt')
