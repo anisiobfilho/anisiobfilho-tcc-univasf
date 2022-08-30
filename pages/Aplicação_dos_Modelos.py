@@ -47,6 +47,7 @@ vacinaReplace = [
                     'fio cruz', 'fiocruz' 
                 ]
 
+nltk.download('stopwords')
 stopWords = nltk.corpus.stopwords.words('portuguese')
 spell = SpellChecker(language='pt')
 stemmer = nltk.stem.RSLPStemmer()
@@ -141,11 +142,11 @@ def troca_palavras(linha):
 
     return nova_linha
 
-def lemmatization_cogroo4py(linha):
-    nova_linha = []
-    for palavra in nlp(linha):
-        nova_linha.append(palavra.lemma_)
-
+def lemmatization_spacy(linha):
+    nova_linha = list()
+    doc = nlp(str(linha))
+    nova_linha = [token.lemma_ for token in doc if not token.is_punct]
+        
     return nova_linha
 
 def preprocessa_tweet(tweet):
@@ -154,7 +155,7 @@ def preprocessa_tweet(tweet):
     tweet = remove_stopwords_nltk(tweet)
     tweet = remove_stopwords_internet(tweet)
     tweet = troca_palavras(tweet)
-    tweet = lemmatization_cogroo4py(tweet)
+    tweet = lemmatization_spacy(tweet)
 
     return tweet
 
