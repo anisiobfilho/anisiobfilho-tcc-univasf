@@ -47,24 +47,13 @@ vacinaReplace = [
                     'fio cruz', 'fiocruz' 
                 ]
 
-@st.experimental_memo
-def carrega_spell():
-    return SpellChecker(language='pt')
-spell = carrega_spell()
 
-@st.experimental_memo
-def carrega_spacy():
-    return spacy.load("pt_core_news_sm")
-nlp = carrega_spacy()
+spell = SpellChecker(language='pt')
 
-nltk.download('stopwords')
-@st.experimental_memo
-def carrega_stopwords():
-    return nltk.corpus.stopwords.words('portuguese')
-stopWords = carrega_stopwords()
+nlp = spacy.load("pt_core_news_sm")
 
-#@st.experimental_memo
-#def carrega_ekphrasis():
+stopWords = nltk.corpus.stopwords.words('portuguese')
+
 text_processor = TextPreProcessor(
     # terms that will be normalized
     normalize=['url', 'email', 'percent', 'money', 'phone', 'user',
@@ -94,8 +83,6 @@ text_processor = TextPreProcessor(
     # with other expressions. You can pass more than one dictionaries.
     dicts=[emoticons]
     )
-    #return text_processor
-#text_processor=carrega_ekphrasis()
 
 @st.experimental_memo
 def carrega_modelo(path):
