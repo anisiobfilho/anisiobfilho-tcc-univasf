@@ -13,4 +13,4 @@ ekphrasis==0.5.4
 cogroo4py==0.4.7
 pyspellchecker==0.6.3
 spacy==3.4.1
-https://github.com/explosion/spacy-models/releases/download/pt_core_news_lg-3.4.0/pt_core_news_lg-3.4.0.tar.gz
+git+https://github.com/explosion/spacy-models/releases/download/pt_core_news_lg-3.4.0/pt_core_news_lg-3.4.0.tar.gz
