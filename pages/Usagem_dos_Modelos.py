@@ -51,7 +51,7 @@ vacinaReplace = [
 spell = SpellChecker(language='pt')
 
 nlp = spacy.load("pt_core_news_sm")
-
+nltk.download('stopwods')
 stopWords = nltk.corpus.stopwords.words('portuguese')
 
 text_processor = TextPreProcessor(
