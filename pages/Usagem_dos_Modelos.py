@@ -17,7 +17,6 @@ from spellchecker import SpellChecker
 #from cogroo4py.cogroo import Cogroo
 import spacy
 import gc
-import pyautogui
 
 st.set_page_config(
      page_title="Aplicação dos Modelos",
