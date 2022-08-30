@@ -53,6 +53,7 @@ spell = SpellChecker(language='pt')
 nltk.download('rslp')
 stemmer = nltk.stem.RSLPStemmer()
 #cogroo = Cogroo()
+
 nlp = spacy.load("pt_core_news_lg")
 
 text_processor = TextPreProcessor(
