@@ -13,4 +13,4 @@ ekphrasis==0.5.4
 pyspellchecker==0.6.3
 imbalanced-learn==0.9.1
 spacy==3.4.0
-https://github.com/explosion/spacy-models/releases/download/pt_core_news_lg-3.4.0/pt_core_news_lg-3.4.0.tar.gz#egg=pt_core_news_lg
+https://github.com/explosion/spacy-models/releases/download/pt_core_news_sm-3.4.0/pt_core_news_sm-3.4.0.tar.gz#egg=pt_core_news_sm

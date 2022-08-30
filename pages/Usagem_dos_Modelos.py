@@ -54,7 +54,7 @@ spell = carrega_spell()
 
 @st.experimental_memo
 def carrega_spacy():
-    return spacy.load("pt_core_news_lg")
+    return spacy.load("pt_core_news_sm")
 nlp = carrega_spacy()
 
 nltk.download('stopwords')
