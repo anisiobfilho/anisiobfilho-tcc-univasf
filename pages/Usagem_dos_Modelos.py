@@ -52,6 +52,7 @@ spell = SpellChecker(language='pt')
 
 nlp = spacy.load("pt_core_news_sm")
 nltk.download('stopwords')
+nltk.download('punkt')
 stopWords = nltk.corpus.stopwords.words('portuguese')
 
 text_processor = TextPreProcessor(
