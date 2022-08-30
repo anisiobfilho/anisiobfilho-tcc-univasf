@@ -261,7 +261,7 @@ st.header("Modelos 🌵")
 #algoritmo = st.selectbox('Algoritmo',("Random Forest","XGBoost"))
 #oversampling = st.selectbox('Oversampling',('True', 'False')) 
 #undersampling = st.selectbox('Undersampling',('False', 'True')) 
-algoritmo = st.selectbox('Algoritmo',("Random Forest, Oversampling=True, Undersampling=False","Random Forest, Oversampling=False, Undersampling=False"))
+algoritmo = st.selectbox('Modelo',("Random Forest, Oversampling=True, Undersampling=False","Random Forest, Oversampling=False, Undersampling=False"))
 tweet_text = st.text_input("Tweet")
 resultado =""
 
