@@ -254,7 +254,7 @@ if algoritmo == 'Random Forest':
 elif algoritmo == 'XGBoost':
     tag = 'XGB'
 
-modelo = jblid.load('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
+modelo = joblib.load('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
 
 if st.button("Predict"): 
         resultado = modelo.predict(cria_modelo_word2vec(tweet_text))
