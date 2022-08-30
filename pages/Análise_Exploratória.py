@@ -6,7 +6,7 @@ import plotly.express as px
 from wordcloud import WordCloud
 
 st.set_page_config(
-     page_title="Projeto Facheiro",
+     page_title="Análise Exploratória",
      page_icon="🌵",
      layout="wide",
      initial_sidebar_state="expanded",
