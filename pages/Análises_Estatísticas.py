@@ -9,10 +9,11 @@ st.set_page_config(
      menu_items={}
  )
 
+st.experimental_singleton.clear()
 
 st.header("Análises Estatísticas 🌵")
 
-@st.experimental_memo
+@st.experimental_singleton
 def carrega_base(path):
     data = pd.read_csv(path, sep=",", low_memory=True)
     return data
@@ -31,4 +32,6 @@ st.image('models/boxplot/boxplot_opinion.png')
 
 st.write('Fake')
 st.image('models/boxplot/boxplot_fake.png')
+
+st.experimental_singleton.clear()
 

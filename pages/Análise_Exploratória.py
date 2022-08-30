@@ -13,8 +13,10 @@ st.set_page_config(
      menu_items={}
  )
 
+st.experimental_singleton.clear()
+
 ## Abertura de arquivo e criação do dataframe:
-@st.experimental_memo
+@st.experimental_singleton
 def carrega_base(path):
     data = pd.read_csv(path, sep=",", low_memory=True)
     data.drop_duplicates(subset='tweet_id', keep='first', inplace=True)
@@ -406,3 +408,5 @@ with st.expander("Lemmatization"):
 
         lemmatization_opinion_fig, lemmatization_opinion_wordcloud = gera_nuvem_palavras(lemmatization_opinion_dict)
         st.pyplot(lemmatization_opinion_fig)
+
+st.experimental_singleton.clear()

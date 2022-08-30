@@ -9,10 +9,12 @@ st.set_page_config(
      menu_items={}
  )
 
+st.experimental_singleton.clear()
+
 ## MAIN
 st.header("Base de Dados 🌵")
 
-@st.experimental_memo
+@st.experimental_singleton
 def carrega_base(path):
     data = pd.read_csv(path, sep=",", low_memory=True)
     data.drop_duplicates(subset='tweet_id', keep='first', inplace=True)
@@ -21,3 +23,5 @@ def carrega_base(path):
 df = carrega_base('data/corpus_labeled/iguais/bases_tcc/03_geracao_carcteristicas_base.csv')
 
 st.dataframe(df)
+
+st.experimental_singleton.clear()

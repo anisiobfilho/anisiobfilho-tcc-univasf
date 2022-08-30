@@ -25,8 +25,10 @@ st.set_page_config(
      menu_items={}
  )
 
+st.experimental_singleton.clear()
+
 ## FUNÇÕES DE PRÉ-PROCESSAMENTO
-@st.cache()
+@st.experimental_singleton
 def carrega_base(path):
     data = pd.read_csv(path, low_memory=True)
     return data
@@ -37,13 +39,13 @@ df_estados = carrega_base("data/utils/abreviações_estados.csv")
 df_vacinar = carrega_base("data/utils/flexões_vacinar.csv")
 df_stopwords = carrega_base("data/utils/stopwords_internet_symboless.csv")
 
-@st.cache()
+@st.experimental_singleton
 def gera_dict_internet(df_internet):
     dict_internet = df_internet.set_index('sigla')['significado'].to_dict()
     return dict_internet
 dict_internet = gera_dict_internet(df_internet)
 
-@st.cache()
+@st.experimental_singleton
 def gera_dict_estados(df_estados):
     dict_estados = df_estados.set_index('sigla')['estado'].to_dict()
     return dict_estados
@@ -51,13 +53,13 @@ dict_estados = gera_dict_estados(df_estados)
 
 del(df_internet)
 del(df_estados)
-@st.cache()
+@st.experimental_singleton
 def gera_covidReplace():
     covidReplace = [ 'covid', 'covid-19', 'covid19', 'coronavirus', 'corona', 'virus' ]
     return covidReplace
 covidReplace = gera_covidReplace()
 
-@st.cache()
+@st.experimental_singleton
 def gera_vacinaReplace():
     vacinaReplace = [
                     'coronavac', 'astrazeneca', 'pfizer', 
@@ -110,7 +112,7 @@ text_processor = TextPreProcessor(
     dicts=[emoticons]
     )
 
-@st.cache()
+@st.experimental_singleton
 def carrega_modelo_word2vec(path):
     modelo_word2vec = gensim.models.KeyedVectors.load(path)
     return modelo_word2vec
@@ -288,6 +290,7 @@ if st.button("Predict"):
 
     st.success('A classe deste tweet é: {}'.format(classe))
     #print(classe)
+    st.experimental_singleton.clear()
     del(tweet_text)
     del(algoritmo)
     del(oversampling)
