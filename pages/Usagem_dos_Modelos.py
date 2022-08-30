@@ -16,6 +16,8 @@ from nltk.tokenize import word_tokenize
 from spellchecker import SpellChecker
 #from cogroo4py.cogroo import Cogroo
 import spacy
+import gc
+
 st.set_page_config(
      page_title="Aplicação dos Modelos",
      page_icon="🌵",
@@ -47,8 +49,8 @@ def gera_dict_estados(df_estados):
     dict_estados = df_estados.set_index('sigla')['estado'].to_dict()
     return dict_estados
 dict_estados = gera_dict_estados(df_estados)
-del(df_internet)
-del(df_estados)
+gc.collect(df_internet)
+gc.collect(df_estados)
 
 @st.cache()
 def gera_covidReplace():
@@ -244,14 +246,14 @@ def cria_modelo_word2vec(linha):
     pca_model = PCA(n_components=50)
     pca_model.fit(x_vecs)
     x_comps = pca_model.transform(test_vec.reshape(1,-1))
-    del(linha)
-    del(nova_linha)
-    del(doc)
-    del(modelo_word2vec) 
-    del(sequencer)
-    del(x_vecs)
-    del(pca_model)
-    del(test_vec)
+    gc.collect(linha)
+    gc.collect(nova_linha)
+    gc.collect(doc)
+    gc.collect(modelo_word2vec) 
+    gc.collect(sequencer)
+    gc.collect(x_vecs)
+    gc.collect(pca_model)
+    gc.collect(test_vec)
     return x_comps
 
 ## MAIN
@@ -281,15 +283,15 @@ if st.button("Predict"):
 
     st.success('A classe deste tweet é: {}'.format(classe))
     #print(classe)
-    del(tweet_text)
-    del(algoritmo)
-    del(oversampling)
-    del(undersampling)
-    del(tag)
-    del(modelo)
-    del(resultado)
-    del(classe)
-    del(spell)
-    del(nlp)
-    del(stopWords)
-    del(text_processor)
+    gc.collect(tweet_text)
+    gc.collect(algoritmo)
+    gc.collect(oversampling)
+    gc.collect(undersampling)
+    gc.collect(tag)
+    gc.collect(modelo)
+    gc.collect(resultado)
+    gc.collect(classe)
+    gc.collect(spell)
+    gc.collect(nlp)
+    gc.collect(stopWords)
+    gc.collect(text_processor)
