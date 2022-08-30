@@ -47,10 +47,11 @@ vacinaReplace = [
                     'fio cruz', 'fiocruz' 
                 ]
 
-nltk.download('stopwords')
-stopWords = nltk.corpus.stopwords.words('portuguese')
 spell = SpellChecker(language='pt')
 nlp = spacy.load("pt_core_news_lg")
+
+nltk.download('stopwords')
+stopWords = nltk.corpus.stopwords.words('portuguese')
 
 text_processor = TextPreProcessor(
     # terms that will be normalized
