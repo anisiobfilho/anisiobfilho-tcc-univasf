@@ -18,7 +18,7 @@ from spellchecker import SpellChecker
 import spacy
 
 st.set_page_config(
-     page_title="Aplicação dos Modelos",
+     page_title="Modelos",
      page_icon="🌵",
      layout="wide",
      initial_sidebar_state="expanded",
