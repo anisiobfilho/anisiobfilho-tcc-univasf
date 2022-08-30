@@ -79,7 +79,6 @@ nltk.download('punkt')
 
 stopWords = nltk.corpus.stopwords.words('portuguese')
 
-
 text_processor = TextPreProcessor(
     # terms that will be normalized
     normalize=['url', 'email', 'percent', 'money', 'phone', 'user',
@@ -245,14 +244,16 @@ def cria_modelo_word2vec(linha):
     
     pca_model = PCA(n_components=50)
     pca_model.fit(x_vecs)
-    x_comps = pca_model.transform(test_vec.reshape(1,-1))   
-
+    x_comps = pca_model.transform(test_vec.reshape(1,-1))
+    del(linha)
+    del(nova_linha)
+    del(doc)
+    del(modelo_word2vec) 
+    del(sequencer)
+    del(x_vecs)
+    del(pca_model)
+    del(test_vec)
     return x_comps
-
-
-@st.cache()
-def carrega_modelo(path):
-    return joblib.load(path)
 
 ## MAIN
 st.header("Usagem dos Modelos 🌵")
@@ -270,7 +271,7 @@ if st.button("Predict"):
         tag = 'RF'
     elif algoritmo == 'XGBoost':
         tag = 'XGB'
-    modelo = carrega_modelo('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
+    modelo = joblib.load('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
     resultado = modelo.predict(cria_modelo_word2vec(tweet_text))
     if resultado == 0:
         classe = 'Fake'
@@ -289,3 +290,7 @@ if st.button("Predict"):
     del(modelo)
     del(resultado)
     del(classe)
+    del(spell)
+    del(nlp)
+    del(stopWords)
+    del(text_processor)
