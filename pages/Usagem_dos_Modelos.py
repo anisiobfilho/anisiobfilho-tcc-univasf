@@ -70,11 +70,9 @@ vacinaReplace = gera_vacinaReplace()
 
 spell = SpellChecker(language='pt')
 
-@st.cache()
-def gera_spacy():
-    nlp = spacy.load("pt_core_news_sm")
-    return nlp
-nlp = gera_spacy()
+
+nlp = spacy.load("pt_core_news_sm")
+
 
 nltk.download('stopwords')
 nltk.download('punkt')
