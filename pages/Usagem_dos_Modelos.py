@@ -36,53 +36,92 @@ df_estados = carrega_base("data/utils/abreviações_estados.csv")
 df_vacinar = carrega_base("data/utils/flexões_vacinar.csv")
 df_stopwords = carrega_base("data/utils/stopwords_internet_symboless.csv")
 
-dict_internet = df_internet.set_index('sigla')['significado'].to_dict()
-dict_estados = df_estados.set_index('sigla')['estado'].to_dict()
-covidReplace = [ 'covid', 'covid-19', 'covid19', 'coronavirus', 'corona', 'virus' ]
-vacinaReplace = [
+@st.cache()
+def gera_dict_internet(df_internet):
+    dict_internet = df_internet.set_index('sigla')['significado'].to_dict()
+    return dict_internet
+dict_internet = gera_dict_internet(df_internet)
+
+@st.cache()
+def gera_dict_estados(df_estados):
+    dict_estados = df_estados.set_index('sigla')['estado'].to_dict()
+    return dict_estados
+dict_estados = gera_dict_estados(df_estados)
+del(df_internet)
+del(df_estados)
+
+@st.cache()
+def gera_covidReplace():
+    covidReplace = [ 'covid', 'covid-19', 'covid19', 'coronavirus', 'corona', 'virus' ]
+    return covidReplace
+covidReplace = gera_covidReplace()
+
+@st.cache()
+def gera_vacinaReplace():
+    vacinaReplace = [
                     'coronavac', 'astrazeneca', 'pfizer', 
                     'sputnik v', 'sputnik', 'sinovac', 
                     'oxford', 'moderna', 'butantan', 
                     'johnson', 'johnson&johnson', 'jnj', 
                     'fio cruz', 'fiocruz' 
                 ]
+    return vacinaReplace
+vacinaReplace = gera_vacinaReplace()
 
+@st.cache()
+def gera_SpellChecker():
+    spell = SpellChecker(language='pt')
+    return spell
+spell = gera_SpellChecker()
 
-spell = SpellChecker(language='pt')
-nlp = spacy.load("pt_core_news_sm")
+@st.cache()
+def gera_spacy():
+    nlp = spacy.load("pt_core_news_sm")
+    return nlp
+nlp = gera_spacy
+
 nltk.download('stopwords')
 nltk.download('punkt')
-stopWords = nltk.corpus.stopwords.words('portuguese')
 
-text_processor = TextPreProcessor(
-    # terms that will be normalized
-    normalize=['url', 'email', 'percent', 'money', 'phone', 'user',
-        'time', 'url', 'date', 'number'],
-    # terms that will be annotated
-    annotate={'hashtag', 'allcaps', 'elongated', 'repeated',
-        'emphasis', 'censored'},
-    fix_html=True,  # fix HTML tokens
+@st.cache()
+def gera_nltk_stopwords():
+    stopWords = nltk.corpus.stopwords.words('portuguese')
+    return stopWords
+stopWords = gera_nltk_stopwords()
 
-    # corpus from which the word statistics are going to be used 
-    # for word segmentation 
-    segmenter='twitter', 
+@st.cache()
+def gera_ekprhasis():
+    text_processor = TextPreProcessor(
+        # terms that will be normalized
+        normalize=['url', 'email', 'percent', 'money', 'phone', 'user',
+            'time', 'url', 'date', 'number'],
+        # terms that will be annotated
+        annotate={'hashtag', 'allcaps', 'elongated', 'repeated',
+            'emphasis', 'censored'},
+        fix_html=True,  # fix HTML tokens
 
-    # corpus from which the word statistics are going to be used 
-    # for spell correction
-    corrector='twitter', 
+        # corpus from which the word statistics are going to be used 
+        # for word segmentation 
+        segmenter='twitter', 
 
-    unpack_hashtags=True,  # perform word segmentation on hashtags
-    unpack_contractions=True,  # Unpack contractions (can't -> can not)
-    spell_correct_elong=False,  # spell correction for elongated words
+        # corpus from which the word statistics are going to be used 
+        # for spell correction
+        corrector='twitter', 
 
-    # select a tokenizer. You can use SocialTokenizer, or pass your own
-    # the tokenizer, should take as input a string and return a list of tokens
-    tokenizer=SocialTokenizer(lowercase=True).tokenize,
+        unpack_hashtags=True,  # perform word segmentation on hashtags
+        unpack_contractions=True,  # Unpack contractions (can't -> can not)
+        spell_correct_elong=False,  # spell correction for elongated words
 
-    # list of dictionaries, for replacing tokens extracted from the text,
-    # with other expressions. You can pass more than one dictionaries.
-    dicts=[emoticons]
-    )
+        # select a tokenizer. You can use SocialTokenizer, or pass your own
+        # the tokenizer, should take as input a string and return a list of tokens
+        tokenizer=SocialTokenizer(lowercase=True).tokenize,
+
+        # list of dictionaries, for replacing tokens extracted from the text,
+        # with other expressions. You can pass more than one dictionaries.
+        dicts=[emoticons]
+        )
+    return text_processor
+text_processor = gera_ekprhasis()
 
 @st.cache()
 def carrega_modelo_word2vec(path):
@@ -255,6 +294,7 @@ if st.button("Predict"):
 
     st.success('A classe deste tweet é: {}'.format(classe))
     #print(classe)
+    del(tweet_text)
     del(algoritmo)
     del(oversampling)
     del(undersampling)
