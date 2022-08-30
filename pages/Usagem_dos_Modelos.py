@@ -86,11 +86,6 @@ text_processor = TextPreProcessor(
     )
 
 @st.experimental_memo
-def carrega_modelo(path):
-    modelo = joblib.load(path)
-    return modelo
-
-@st.experimental_memo
 def carrega_modelo_word2vec(path):
     modelo_word2vec = gensim.models.KeyedVectors.load(path)
     return modelo_word2vec
@@ -241,7 +236,7 @@ if algoritmo == 'Random Forest':
 elif algoritmo == 'XGBoost':
     tag = 'XGB'
 
-modelo = carrega_modelo('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
+modelo = joblib.load('models/model-'+tag+'_OV_'+str(oversampling)+'_UN_'+str(undersampling)+'.sav')
 
 if st.button("Predict"): 
         resultado = modelo.predict(cria_modelo_word2vec(tweet_text))
