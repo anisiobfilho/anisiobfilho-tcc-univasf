@@ -50,6 +50,7 @@ vacinaReplace = [
 nltk.download('stopwords')
 stopWords = nltk.corpus.stopwords.words('portuguese')
 spell = SpellChecker(language='pt')
+nltk.download('rslp')
 stemmer = nltk.stem.RSLPStemmer()
 #cogroo = Cogroo()
 nlp = spacy.load("pt_core_news_lg")
