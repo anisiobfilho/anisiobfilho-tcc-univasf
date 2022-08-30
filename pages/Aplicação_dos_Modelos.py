@@ -14,8 +14,8 @@ from ekphrasis.dicts.emoticons import emoticons
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from spellchecker import SpellChecker
-from cogroo4py.cogroo import Cogroo
-
+#from cogroo4py.cogroo import Cogroo
+import spacy
 st.set_page_config(
      page_title="Aplicação dos Modelos",
      page_icon="🌵",
@@ -50,7 +50,8 @@ vacinaReplace = [
 stopWords = nltk.corpus.stopwords.words('portuguese')
 spell = SpellChecker(language='pt')
 stemmer = nltk.stem.RSLPStemmer()
-cogroo = Cogroo()
+#cogroo = Cogroo()
+nlp = spacy.load("pt_core_news_lg")
 
 text_processor = TextPreProcessor(
     # terms that will be normalized
@@ -142,8 +143,8 @@ def troca_palavras(linha):
 
 def lemmatization_cogroo4py(linha):
     nova_linha = []
-    for palavra in linha:
-        nova_linha.append(cogroo.lemmatize(palavra))
+    for palavra in nlp(linha):
+        nova_linha.append(token.lemma_)
 
     return nova_linha
 
