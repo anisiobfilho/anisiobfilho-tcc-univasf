@@ -247,6 +247,8 @@ def cria_modelo_word2vec(tweet):
     x_comps = pca_model.transform(test_vec.reshape(1,-1))   
 
     return x_comps
+
+
 ## MAIN
 st.header("Usagem dos Modelos 🌵")
 
