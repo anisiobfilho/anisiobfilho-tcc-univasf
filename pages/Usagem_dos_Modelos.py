@@ -49,8 +49,6 @@ def gera_dict_estados(df_estados):
     dict_estados = df_estados.set_index('sigla')['estado'].to_dict()
     return dict_estados
 dict_estados = gera_dict_estados(df_estados)
-gc.collect(df_internet)
-gc.collect(df_estados)
 
 @st.cache()
 def gera_covidReplace():
