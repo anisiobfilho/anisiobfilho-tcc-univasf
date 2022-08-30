@@ -265,7 +265,7 @@ st.header("Modelos 🌵")
 #undersampling = st.selectbox('Undersampling',('False', 'True')) 
 algoritmo = st.selectbox('Modelo',("Random Forest, Oversampling=True, Undersampling=False","Random Forest, Oversampling=False, Undersampling=False"))
 tweet_text = st.text_input("Tweet")
-resultado =""
+#resultado =""
 
 
 
@@ -281,11 +281,12 @@ if st.button("Predict"):
         
     modelo = joblib.load('models/model-'+tag+'_OV_'+oversampling+'_UN_'+undersampling+'.sav')
     resultado = modelo.predict(cria_modelo_word2vec(tweet_text))
-    if resultado == 0:
-        classe = 'Fake'
-    elif resultado == 1:
+    #print('Resultado = ', resultado[0])
+    if resultado[0] == 0:
+        classe = 'News'
+    elif resultado[0] == 1:
         classe = 'Opinion'
-    elif resultado == 2:
+    elif resultado[0] == 2:
         classe = 'Fake'
 
     st.success('A classe deste tweet é: {}'.format(classe))
