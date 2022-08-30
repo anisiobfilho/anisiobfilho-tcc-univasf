@@ -47,13 +47,25 @@ vacinaReplace = [
                     'fio cruz', 'fiocruz' 
                 ]
 
-spell = SpellChecker(language='pt')
-nlp = spacy.load("pt_core_news_lg")
+@st.experimental_memo
+def carrega_spell():
+    return SpellChecker(language='pt')
+spell = carrega_spell()
+
+@st.experimental_memo
+def carrega_spacy():
+    return spacy.load("pt_core_news_lg")
+nlp = carrega_spacy()
 
 nltk.download('stopwords')
-stopWords = nltk.corpus.stopwords.words('portuguese')
+@st.experimental_memo
+def carrega_stopwords():
+    return nltk.corpus.stopwords.words('portuguese')
+stopWords = carrega_stopwords()
 
-text_processor = TextPreProcessor(
+@st.experimental_memo
+def carrega_ekphrasis():
+    text_processor = TextPreProcessor(
     # terms that will be normalized
     normalize=['url', 'email', 'percent', 'money', 'phone', 'user',
         'time', 'url', 'date', 'number'],
@@ -81,9 +93,21 @@ text_processor = TextPreProcessor(
     # list of dictionaries, for replacing tokens extracted from the text,
     # with other expressions. You can pass more than one dictionaries.
     dicts=[emoticons]
-)
+    )
+    return text_processor
+text_processor=carrega_ekphrasis()
 
-def realiza_preproc(linha):
+@st.experimental_memo
+def carrega_modelo(path):
+    modelo = joblib.load(path)
+    return modelo
+
+@st.experimental_memo
+def carrega_modelo_word2vec(path):
+    modelo_word2vec = gensim.models.KeyedVectors.load(path)
+    return modelo_word2vec
+
+def cria_modelo_word2vec(linha): 
     ### Convertendo para string
     linha = str(linha)
     ### Removendo os '\n'
@@ -100,33 +124,22 @@ def realiza_preproc(linha):
     linha = unidecode(linha)
     ### Removendo espaços múltiplos
     linha = re.sub(r'\s+', ' ', linha)
-    
-    return linha
 
-def tokenizador_nltk(linha):
     linha = word_tokenize(linha, language='portuguese')
-    return linha
 
-##Remoção de Stopwords utilizando NLTK:
-def remove_stopwords_nltk(linha):
-    nova_linha = []
+    nova_linha1 = []
     for parte in linha:
         if parte not in stopWords:
-            nova_linha.append(parte)
+            nova_linha1.append(parte)
         
-    return nova_linha
-
-def remove_stopwords_internet(linha):
-    nova_linha = []
-    for palavra in linha:
-        if palavra not in df_stopwords.stopwords.to_list():
-            nova_linha.append(palavra)
     
-    return nova_linha
-
-def troca_palavras(linha):
-    nova_linha = []
-    for palavra in linha:
+    nova_linha2 = []
+    for palavra in nova_linha1:
+        if palavra not in df_stopwords.stopwords.to_list():
+            nova_linha2.append(palavra)
+    
+    nova_linha3 = []
+    for palavra in nova_linha3:
         if palavra in dict_internet.keys():
             palavra = palavra.replace(palavra, dict_internet[palavra])
         if palavra in dict_estados.keys():
@@ -137,35 +150,15 @@ def troca_palavras(linha):
             palavra = palavra.replace(palavra, 'covid')            
         if palavra in vacinaReplace:
             palavra = palavra.replace(palavra, 'vacina')
-        nova_linha.append(palavra)
+        nova_linha3.append(palavra)
 
-    return nova_linha
-
-def lemmatization_spacy(linha):
-    nova_linha = list()
+    nova_linha4 = []
     doc = nlp(str(linha))
-    nova_linha = [token.lemma_ for token in doc if not token.is_punct]
-        
-    return nova_linha
+    nova_linha4 = [token.lemma_ for token in doc if not token.is_punct]
 
-def preprocessa_tweet(tweet):
-    tweet = realiza_preproc(tweet)
-    tweet = tokenizador_nltk(tweet)
-    tweet = remove_stopwords_nltk(tweet)
-    tweet = remove_stopwords_internet(tweet)
-    tweet = troca_palavras(tweet)
-    tweet = lemmatization_spacy(tweet)
+    tweet = nova_linha4
 
-    return tweet
-
-@st.experimental_memo
-def carrega_modelo(path):
-    modelo = joblib.load(path)
-    return modelo
-
-def cria_modelo_word2vec(tweet): 
-    tweet = preprocessa_tweet(tweet)
-    modelo_word2vec = gensim.models.KeyedVectors.load('data/corpus_labeled/iguais/bases_tcc/05_word2vec_model_creation_base')
+    modelo_word2vec = carrega_modelo_word2vec('data/corpus_labeled/iguais/bases_tcc/05_word2vec_model_creation_base')
 
     class Sequencer():
     
