@@ -50,10 +50,6 @@ vacinaReplace = [
 nltk.download('stopwords')
 stopWords = nltk.corpus.stopwords.words('portuguese')
 spell = SpellChecker(language='pt')
-#nltk.download('rslp')
-#stemmer = nltk.stem.RSLPStemmer()
-#cogroo = Cogroo()
-#
 nlp = spacy.load("pt_core_news_lg")
 
 text_processor = TextPreProcessor(
@@ -275,4 +271,4 @@ if st.button("Predict"):
             classe = 'Fake'
 
         st.success('A classe deste tweet é: {}'.format(classe))
-        print(resultado)
+        #print(classe)
