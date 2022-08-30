@@ -16,7 +16,6 @@ from nltk.tokenize import word_tokenize
 from spellchecker import SpellChecker
 #from cogroo4py.cogroo import Cogroo
 import spacy
-import gc
 
 st.set_page_config(
      page_title="Aplicação dos Modelos",
@@ -257,21 +256,27 @@ def cria_modelo_word2vec(linha):
     return x_comps
 
 ## MAIN
-st.header("Usagem dos Modelos 🌵")
+st.header("Modelos 🌵")
 
-algoritmo = st.selectbox('Algoritmo',("Random Forest","XGBoost"))
-oversampling = st.selectbox('Oversampling',('True', 'False')) 
-undersampling = st.selectbox('Undersampling',('False', 'True')) 
+#algoritmo = st.selectbox('Algoritmo',("Random Forest","XGBoost"))
+#oversampling = st.selectbox('Oversampling',('True', 'False')) 
+#undersampling = st.selectbox('Undersampling',('False', 'True')) 
+algoritmo = st.selectbox('Algoritmo',("Random Forest, Oversampling=True, Undersampling=False","Random Forest, Oversampling=False, Undersampling=False"))
 tweet_text = st.text_input("Tweet")
 resultado =""
 
 
 
 if st.button("Predict"): 
-    if algoritmo == 'Random Forest':
+    if algoritmo == 'Random Forest, Oversampling=True, Undersampling=False':
         tag = 'RF'
-    elif algoritmo == 'XGBoost':
-        tag = 'XGB'
+        oversampling = 'True'
+        undersampling = 'False'
+    elif algoritmo == 'Random Forest, Oversampling=False, Undersampling=False':
+        tag = 'RF'
+        oversampling = 'False'
+        undersampling = 'False'
+        
     modelo = joblib.load('models/model-'+tag+'_OV_'+oversampling+'_UN_'+undersampling+'.sav')
     resultado = modelo.predict(cria_modelo_word2vec(tweet_text))
     if resultado == 0:
