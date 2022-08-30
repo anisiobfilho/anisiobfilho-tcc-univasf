@@ -114,7 +114,6 @@ def carrega_modelo_word2vec(path):
     modelo_word2vec = gensim.models.KeyedVectors.load(path)
     return modelo_word2vec
 
-@st.cache()
 def cria_modelo_word2vec(linha): 
     ### Convertendo para string
     linha = str(linha)
