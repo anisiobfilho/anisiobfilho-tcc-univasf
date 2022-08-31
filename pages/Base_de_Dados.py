@@ -24,7 +24,7 @@ df = carrega_base('data/corpus_labeled/iguais/bases_tcc/03_geracao_carcteristica
 
 st.subheader("Covid-19 Text Dataset - CTD")
 
-st.write('Apresentação do corpus gerado no estudo, incluindo colunas acrescentadas durante as estapas de pré-processamento e análise exploratória')
+st.write('Apresentação do corpus gerado no estudo, incluindo colunas acrescentadas durante as etapas de pré-processamento e análise exploratória')
 
 st.dataframe(df)
 
