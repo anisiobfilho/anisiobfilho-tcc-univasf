@@ -258,8 +258,9 @@ def cria_modelo_word2vec(linha):
     return x_comps
 
 ## MAIN
-st.header("Modelos 🌵")
+st.header("Modelos")
 
+st.write('Aqui estão disponibilizados para uso os dois modelos que tiveram os melhores resultados para as classes consideradas no estudo')
 #algoritmo = st.selectbox('Algoritmo',("Random Forest","XGBoost"))
 #oversampling = st.selectbox('Oversampling',('True', 'False')) 
 #undersampling = st.selectbox('Undersampling',('False', 'True')) 
@@ -269,7 +270,7 @@ tweet_text = st.text_input("Tweet")
 
 
 
-if st.button("Predict"): 
+if st.button("Classificar"): 
     if algoritmo == 'Random Forest, Oversampling=True, Undersampling=False':
         tag = 'RF'
         oversampling = 'True'
