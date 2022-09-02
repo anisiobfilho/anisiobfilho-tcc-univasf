@@ -24,8 +24,8 @@ df = carrega_base('data/corpus_labeled/iguais/bases_tcc/03_geracao_carcteristica
 
 st.subheader("Covid-19 Text Dataset - CTD")
 
-st.write('Apresentação do corpus gerado no estudo, incluindo colunas acrescentadas durante as etapas de pré-processamento e análise exploratória')
+st.write('Apresentação do corpus gerado no estudo, contendo o ID do tweet e a rotulação correspondente')
 
-st.dataframe(df)
+st.dataframe(df[['tweet_id', 'label_A']])
 
 st.experimental_singleton.clear()
